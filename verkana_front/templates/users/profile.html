@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+
+
+{% block title %}
+    پروفایل | ورکانا
+{% endblock %}
+
+
+{% block content %}
+
+    {% render_partial 'shop.views.MixinViewPartial' %}
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">پروفایل</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                <li>اطلاعات حساب کاربری</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashbord-wrapper ml-110 mt-100">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12">
+                    <div class="dashbord-switcher">
+                        <a href="/user/profile/" class="active"><i class="flaticon-user"></i> پروفایل من</a>
+                        <a href="/user/orders/"><i class="flaticon-shopping-bag"></i> سفارشات من</a>
+                        <a href="/user/logout/"><i class="flaticon-logout"></i> خروج</a>
+                    </div>
+                </div>
+                <div class="col-xxl-8 col-xl-8 col-lg-8">
+                    <div class="profile-form-wrapper">
+                        <h5>پروفایل</h5>
+                        <div class="profile-top">
+                            <div class="user-image">
+                                <img src="{{ base_url }}{{ result.image }}" alt="عکس پروفایل کاربر">
+                            </div>
+                            <div class="profile-top-btns">
+                                <input type="file" id="file" name="file" style="visibility: hidden"/>
+                                <a onclick="jQuery('#file').click()" class="upload">آپلود</a>
+                                <a href="#" class="remove">حذف</a>
+                            </div>
+                        </div>
+                        <div id="profile-form">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="reg-input-group">
+                                        <label for="fname">نام کوچک*</label>
+                                        <input type="text" id="fname" placeholder="نام شما" value="{{ result.name }}"
+                                               onchange="$('#submite-btn').prop('disabled', false);">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="reg-input-group">
+                                        <label for="lname">نام خانوادگی*</label>
+                                        <input type="text" id="lname" placeholder="نام خانوادگی شما"
+                                               value="{{ result.family }}"
+                                               onchange="$('#submite-btn').prop('disabled', false);">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="reg-input-group">
+                                        <label for="Number">شماره تماس</label>
+                                        <input type="text" value="{{ result.user_phone }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="reg-input-group">
+                                        <label for="gender">جنسیت</label>
+                                        <select id="gender" onchange="$('#submite-btn').prop('disabled', false);">
+                                            {% if result.gender == 'True' %}
+                                                <option value="True">آقا</option>
+                                                <option value="False">خانم</option>
+                                                <option value="None">...</option>
+                                            {% elif result.gender == 'False' %}
+                                                <option value="False">خانم</option>
+                                                <option value="True">آقا</option>
+                                                <option value="None">...</option>
+                                            {% else %}
+                                                <option value="None">...</option>
+                                                <option value="False">خانم</option>
+                                                <option value="True">آقا</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div
+                                            class="reg-input-group profile-form-sumbit reg-submit-input d-flex align-items-center">
+                                        <input type="submit" id="submite-btn" value="ذخیره تغییرات"
+                                               onclick="change_information()" disabled
+                                               title="برای ذخیره تغییرات  ابتدا مقادیر را تغییر دهید">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12 mt-5">
+                                    <div class="reg-input-group">
+                                        <label for="password">رمز عبور فعلی</label>
+                                        <input type="password" id="old_password" placeholder="رمز عبور را وارد کنید">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="reg-input-group">
+                                        <label for="sure-pass">رمز عبور جدید</label>
+                                        <input type="password" id="new_password" placeholder="رمز عبور را تایید کنید">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <span class="text-white-50">برای امنیت بیشتر پس از تفییر رمز عبور بهتر است که دوباره وارد شوید!</span>
+                                    <div class="reg-input-group profile-form-sumbit reg-submit-input d-flex align-items-center">
+                                        <input type="submit" onclick="change_password()" value="تغییر کلمه عبور">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+
+    {% csrf_token %}
+
+{% endblock %}
+
+
+{% block footer_links %}
+    <script src="/static/users/js/profile.js"></script>
+{% endblock %}

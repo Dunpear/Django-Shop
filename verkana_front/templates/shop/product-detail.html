@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load render_partial %}
+
+
+{% block content %}
+
+{% render_partial 'shop.views.MixinViewPartial' %}
+
+{% render_partial 'shop.views.SideBarPartial' %}
+{% render_partial 'shop.views.HeaderPartial' %}
+
+
+<div class="breadcrumb-area ml-110">
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                    <div class="breadcrumb-shape1 position-absolute bottom-0 end-0">
+                        <img src="../images/shapes/bs-right.png" alt="">
+                    </div>
+                    <div class="breadcrumb-shape2 position-absolute top-0 start-0">
+                        <img src="../images/shapes/bs-left.png" alt="">
+                    </div>
+                    <div class="breadcrumb-content text-center">
+                        <h2 class="page-title">جزئیات محصول</h2>
+                        <ul class="page-switcher d-flex ">
+                            <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                            <li>{{ product_detail.message }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="product-details-area mt-100 ml-110">
+    <div class="container">
+        <div class="product-details-wrapper">
+            <div class="row">
+                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-8">
+                    <div class="product-switcher-wrap">
+                        <div class="nav product-tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+
+                            <div class="product-variation active" id="v-pills-home-tab" data-bs-toggle="pill"
+                                 data-bs-target="#v-pills-home" role="tab" aria-controls="v-pills-home">
+                                <div class="pd-showcase-img">
+                                    <img src="{{ base_url }}{{ product_detail.result.cover_picture }}"
+                                         alt="product_detail.result.group_image_alt">
+                                </div>
+                            </div>
+
+                            {% for image in product_detail.result.product_gallery %}
+                                <div class="product-variation" id="v-pills-{{ forloop.counter }}-tab"
+                                     data-bs-toggle="pill"
+                                     data-bs-target="#v-pills-{{ forloop.counter }}" role="tab"
+                                     aria-controls="v-pills-{{ forloop.counter }}">
+                                    <div class="pd-showcase-img">
+                                        <img src="{{ base_url }}{{ image.product_picture }}"
+                                             alt="{{ image.product_picture_alt }}">
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <div class="tab-content" id="v-pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                                 aria-labelledby="v-pills-home-tab">
+                                <div class="pd-preview-img">
+                                    <img src="{{ base_url }}{{ product_detail.result.cover_picture }}" alt="">
+                                </div>
+                            </div>
+                            {% for image in product_detail.result.product_gallery %}
+                                <div class="tab-pane fade" id="v-pills-{{ forloop.counter }}" role="tabpanel"
+                                     aria-labelledby="v-pills-{{ forloop.counter }}-tab">
+                                    <div class="pd-preview-img">
+                                        <img src="{{ base_url }}{{ image.product_picture }}"
+                                             alt="{{ image.product_picture_alt }}">
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-6 col-xl-6 col-lg-6">
+                    <div class="product-details-wrap">
+                        <div class="pd-top">
+
+                            <h3 class="pd-title"> {{ product_detail.result.product_name }} </h3>
+                            <h5 class="pd-price">{{ product_detail.result.product_after_discount|intcomma:False }}
+                                تومان</h5>
+                            <p class="pd-small-info">
+                                {% autoescape off %}
+                                {{ product_detail.result.short_description }}
+                                {% endautoescape %}
+                            </p>
+                        </div>
+                        <div class="pd-quick-discription">
+                            <ul>
+                                <li class="d-flex align-items-center pd-cart-btns">
+                                    <div class="quantity">
+                                        <input type="number" min="1" max="90" step="10" value="1" id="count">
+                                    </div>
+                                    <button type="submit" class="pd-add-cart"
+                                            onclick="Additem({{ product_detail.result.id }}, 0, 'input')">به سبد خرید
+                                        اضافه کنید
+                                    </button>
+                                </li>
+                                <li class="pd-type">دسته بندی ها:
+                                    <span>  {% for group in product_detail.result.product_group %}
+                                        {{ group.group_title }}
+                                    {% endfor %}
+                                     </span></li>
+                                <li class="pd-type">موجود: <span>{{ product_detail.result.exist_count }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-discription-wrapper mt-100">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-3">
+                    <div class="nav flex-column nav-pills discription-bar" id="v-pills-tab2" role="tablist"
+                         aria-orientation="vertical">
+                        <button class="nav-link active" id="pd-discription3" data-bs-toggle="pill"
+                                data-bs-target="#pd-discription-pill3" role="tab"
+                                aria-controls="pd-discription-pill3">
+                            توضیحات تکمیلی
+                        </button>
+                        <button class="nav-link" id="pd-discription2" data-bs-toggle="pill"
+                                data-bs-target="#pd-discription-pill2" role="tab"
+                                aria-controls="pd-discription-pill2">
+                            ویژگی ها
+                        </button>
+                        <button class="nav-link" id="pd-discription1" data-bs-toggle="pill"
+                                data-bs-target="#pd-discription-pill1" role="tab"
+                                aria-controls="pd-discription-pill1">
+                            نظرات کاربران
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-xl-9">
+                    <div class="tab-content discribtion-tab-content" id="v-pills-tabContent2">
+                        <div class="tab-pane fade show active" id="pd-discription-pill3" role="tabpanel"
+                             aria-labelledby="pd-discription3">
+                            <div class="discription-texts">
+                                {% autoescape off %}
+                                {{ product_detail.result.full_description }}
+                                {% endautoescape %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pd-discription-pill2" role="tabpanel"
+                             aria-labelledby="pd-discription2">
+                            <div class="additional-discription">
+                                <ul>
+                                    {% for product_feature in product_detail.result.product_features %}
+                                        <li>
+                                            <h5 class="additition-name">{{ product_feature.feature.feature_title }}</h5>
+                                            <div class="additition-variant">
+                                                <span>:</span>{{ product_feature.feature_value }}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="pd-discription-pill1" role="tabpanel"
+                             aria-labelledby="pd-discription1">
+                            <div class="discription-review">
+                                <div class="clients-review-cards">
+                                    <div class="row">
+                                        {% for comment in product_detail.result.product_comment %}
+                                            {% if comment.is_active %}
+                                                <div class="col-lg-12 mt-3">
+                                                    <div class="client-review-card">
+                                                        <div class="review-card-head">
+                                                            <div class="client-img">
+                                                                <img src="{{ base_url }}{{ comment.user.image }}"
+                                                                     alt="پروفایل کاربری" width="50px" height="50px"
+                                                                     style="border-radius: 200px">
+                                                            </div>
+                                                            <div class="client-info">
+                                                                <h5 class="client-name">
+                                                                    {{ comment.user.name }}{{ comment.user.family }}<span
+                                                                        class="review-date p-1"
+                                                                        dir="rtl">{{ comment.register_date }}</span>
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                        <p class="review-text">
+                                                            {{ comment.comment }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- region send comment -->
+                                <div class="review-form-wrap">
+                                    {% if auth %}
+                                        <h5>یک نظر بنویسید</h5>
+                                        <h3>بازخورد خود یا سوالات خود از این محصول را با ما به اشتراک بگذارید</h3>
+                                    {% else %}
+                                        <h5>برای ثبت نظر خود ابتدا وارد شوید!</h5>
+                                        <h3>بازخورد یا سوالات خود از این محصول را با دیگران به اشتراک بگذارید</h3>
+                                    {% endif %}
+                                    {% if auth %}
+                                        <div class="review-form">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="review-input-group">
+                                                        <textarea name="review-area" id="review-area"
+                                                                  class="comment-area" cols="30" rows="7"
+                                                                  placeholder="نظرتان را بنویسید!"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 mt-4">
+                                                    <div class="submit-btn">
+                                                        <input type="button" value="ارسال نظر"
+                                                               onclick="submitcomment({{ product_detail.result.id }})">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <a href="/user/login/" class="text-white-50">
+                                            برای ثبت نظر ابتدا وارد
+                                            <ins>حساب کاربری</ins>
+
+                                            خود شوید!
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <!-- endregion -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% csrf_token %}
+
+{% render_partial 'shop.views.FooterPartial' %}
+
+{% endblock %}
+
+{% block footer_links %}
+    <script src="/static/shop/js/comment.js"></script>
+{% endblock %}

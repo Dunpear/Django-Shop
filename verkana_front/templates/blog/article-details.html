@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load render_partial %}
+
+
+{% block content %}
+
+{% render_partial 'shop.views.MixinViewPartial' %}
+
+{% render_partial 'shop.views.SideBarPartial' %}
+{% render_partial 'shop.views.HeaderPartial' %}
+
+
+<div class="breadcrumb-area ml-110">
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                    <div class="breadcrumb-content text-center">
+                        <h2 class="page-title">جزئیات وبلاگ</h2>
+                        <ul class="page-switcher d-flex ">
+                            <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                            <li>جزئیات وبلاگ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="blog-details-wrapper mt-100 ml-110">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-xxl-8 col-xl-8">
+                <div class="blog-details">
+                    <div class="blog-details-thumb">
+                        <img src="{{ base_url }}{{ blog.picture }}" alt="">
+                    </div>
+                    <div class="blog-d-head mb-5">
+                        <div class="blog-d-top">
+                            <a href="/blogs/category/{{ blog.category.id }}"
+                               class="blog-category">{{ blog.category.title }}</a>
+                            <a href="#" class="blog-date"><i class="flaticon-time"></i>{{ blog.register_date }}</a>
+                        </div>
+                        <h3 class="blog-d-title"><a>{{ blog.title }}</a></h3>
+                    </div>
+                    {% autoescape off %}
+
+                    {{ blog.description }}
+
+                    {% endautoescape %}
+                </div>
+            </div>
+            <!-- sidbar -->
+            <div class="col-xxl-4 col-xl-4">
+                <div class="blog-sidebar">
+                    <div class="blog-sidebar-searchbar">
+                        <form action="#" method="POST" class="sidebar-searchbar-form">
+                            <input type="text" name="sidebar-search-input" id="sidebar-search-input"
+                                   placeholder="دنبال چی میگردی؟">
+                            <button type="submit"><i class="bi bi-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="bs-category">
+                        <h5 class="bs-title">دسته بندی وبلاگ</h5>
+                        <ul class="sb-category-list">
+                            {% for category in blog_category %}
+                                <li><a href="/blogs/category_detail/{{ category.id }}">
+                                    <h5><i class="flaticon-arrow-pointing-to-left"></i> {{ category.title }} </h5>
+                                    <span>{{ category.blogs|length }}</span>
+                                </a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="bs-posts">
+                        <h5 class="bs-title">آخرین پست</h5>
+                        <ul class="bs-post-list">
+                            {% for last_blog in last_blogs %}
+                                <li class="bs-single-post">
+                                    <div class="post-thumb">
+                                        <img src="{{ base_url }}{{ last_blog.picture }}" alt="">
+                                    </div>
+                                    <div class="post-details">
+                                        <h4 class="post-title"><a href="/blogs/detail/{{ last_blog.id }}"> چه میوه ای را
+                                            باید خورد؟
+                                        </a>
+                                        </h4>
+                                        <p class="post-date">{{ last_blog.register_date }}</p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% render_partial 'shop.views.FooterPartial' %}
+
+
+{% endblock %}

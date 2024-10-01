@@ -1,0 +1,67 @@
+<header>
+    <div class="header-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div
+                        class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-xs-12 d-xl-flex align-items-center position-relative justify-content-center">
+                    <div class="main-logo d-flex justify-content-between align-items-center">
+                        <a href="/" title="{{ result.0.logo_title }}">
+                            <img src="{{ base_url }}{{ result.0.logo }}" class="logo me-0 me-md-5"
+                                 alt="{{ result.0.logo_alt }}">
+                        </a>
+                        <div class="mobile-menu d-flex ">
+                            <a href="javascript:void(0)" class="hamburger d-block d-xl-none">
+                                <span class="h-top"></span>
+                                <span class="h-middle"></span>
+                                <span class="h-bottom"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 d-flex justify-content-center">
+                    <nav class="main-nav">
+                        <ul class="nav-item-list">
+                            <li>
+                                <a href="/">خانه</a>
+                            </li>
+                            <li><a href="/about_us/">درباره ما</a></li>
+                            <li class="has-child-menu">
+                                <a href="javascript:void(0)">فروشگاه</a>
+                                <i class="fl flaticon-plus">+</i>
+                                <ul class="sub-menu">
+                                    <li><a href="/shop/"> همه محصولات</a></li>
+                                </ul>
+                            </li>
+                            <li class="has-child-menu">
+                                <a href="javascript:void(0)">
+                                    محصولات
+                                </a>
+                                <i class="fl flaticon-plus">+</i>
+                                <ul class="sub-menu">
+                                    {% for product_group in product_groups %}
+                                        <li><a href="/category_detail/{{ product_group.id }}">{{ product_group.group_title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <li class="has-child-menu">
+                                <a href="javascript:void(0)">مقالات</a>
+                                <i class="fl flaticon-plus">+</i>
+                                <ul class="sub-menu">
+                                    <li><a href="/blogs/"> لیست مقالات </a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/contact_us/">تماس با ما</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xl-4 col-4 d-none d-xl-flex p-0  align-items-center justify-content-center">
+                    <div class="nav-right text-center">
+                        {% autoescape off %}
+                        {{ result.0.event_text }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

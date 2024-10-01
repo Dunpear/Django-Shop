@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+{% load static %}
+
+
+
+{% block title %}
+    پروفایل | ورکانا
+{% endblock %}
+
+
+{% block content %}
+
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-shape1 position-absolute bottom-0 end-0">
+                            <img src="../images/shapes/bs-right.png" alt="">
+                        </div>
+                        <div class="breadcrumb-shape2 position-absolute top-0 start-0">
+                            <img src="../images/shapes/bs-left.png" alt="">
+                        </div>
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">ثبت فاکتور</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">برگشت</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                <li>ثبت نهایی فاکتور</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="checkout-area ml-110 mt-100">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-xxl-8 col-xl-8">
+                    <form class="billing-from">
+                        <h5 class="checkout-title">
+                            جزئیات صورتحساب
+                        </h5>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="eg-input-group">
+                                    <label for="first-name">نام شما</label>
+                                    <input type="text" id="first-name" placeholder="نام شما"
+                                           value="{{ user.result.name }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="eg-input-group">
+                                    <label for="last-name">نام خانوادگی</label>
+                                    <input type="text" id="last-name" placeholder="نام خانوادگی شما"
+                                           value="{{ user.result.family }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="eg-input-group">
+                                    <label>اطلاعات تکمیلی</label>
+                                </div>
+                                <div class="row">
+                                    <div class="eg-input-group col-12 col-md-6">
+                                        <input type="text" placeholder="شماره تلفن"
+                                               value="{{ user.result.user_phone }}" id="phone">
+                                    </div>
+                                </div>
+                                <div class="eg-input-group mb-0">
+                                    <textarea cols="30" rows="7" placeholder="آدرس خود را وارد کنید!" id="address" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xxl-4 col-xl-4">
+                    <div class="order-summary">
+                        <div class="added-product-summary">
+                            <h5 class="checkout-title">
+                                خلاصه سفارش
+                            </h5>
+                            <ul class="added-products">
+                                {% for item in factor.result.invoice_items %}
+                                    <li class="single-product">
+                                        <div class="product-img">
+                                            <img src="{{ base_url }}{{ item.product.cover_picture }}" alt="{{ item.product.product_name }}">
+                                        </div>
+                                        <div class="product-info">
+                                            <h5 class="product-title"><a href="/product_detail/{{ item.product.slug }}">{{ item.product.product_name }}</a></h5>
+                                            <div class="product-total">
+                                                <h6 class="text-white">{{ item.count }}</h6>
+                                                <strong> <i class="bi bi-x-lg"></i> <span class="product-price">{{ item.product.product_after_discount }}
+                                                    تومان</span></strong>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                {% endfor %}
+                                {% for item in factor.result.mixed_items %}
+                                    <li class="single-product">
+                                        <div class="product-info">
+                                            <h5 class="product-title"><a href="/product_detail/{{ item.product.slug }}">{{ item.product.product_name }}</a></h5>
+                                            <div class="product-total">
+                                                <h6 class="text-white">{{ item.count }}</h6>
+                                                <strong> <i class="bi bi-x-lg"></i> <span class="product-price">{{ item.product.product_after_discount }}
+                                                    تومان</span></strong>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="total-cost-summary">
+                            <ul>
+                                <li class="subtotal">جمع<span>{{ factor.result.payable_amount|intcomma:False }} تومان</span></li>
+{#                                <li>مالیات<span>5 تومان</span></li>#}
+{#                                <li>کل (بدون مالیات) <span>15 تومان</span></li>#}
+{#                                <li>کل (با احتساب مالیات) <span>15 تومان</span></li>#}
+                            </ul>
+                        </div>
+                        <div class="payment-form">
+                            <div class="place-order-btn">
+                                <button type="button" onclick="check_out()">ثبت سفارش</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+
+    {% csrf_token %}
+
+{% endblock %}
+
+
+{% block footer_links %}
+    <script src="/static/invoice/js/check_out.js"></script>
+{% endblock %}

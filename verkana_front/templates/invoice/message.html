@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+{% load static %}
+
+
+
+{% block title %}
+    نتیجه پرداخت | ورکانا
+{% endblock %}
+
+{% block content %}
+    <div class="register-wrapper ml-110 mt-100">
+        <div class="container">
+
+            <div class="row mt-100 justify-content-center">
+                <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10">
+                    <div class="reg-login-forms">
+                        <h4 class="reg-login-title text-center">{{ message }}</h4>
+                        {% if code %}
+                            <span style="
+    color: white;
+    text-align: center;
+    display: block;
+">کد پیگیری
+          :  {{ code }}            </span>
+                            <span style="
+                                color: white;
+                                text-align: center;
+                                display: block;
+                                margin-top: 63px;
+                                "><a href="/" style="
+                                color: white;
+                                font-size: 19px;
+                            ">بازگشت
+                                </a></span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

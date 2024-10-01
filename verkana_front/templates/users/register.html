@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+{% block title %}
+    ثبت نام | ورکانا
+{% endblock %}
+
+{% block content %}
+
+
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">ثبت نام</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                <li>ثبت نام</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="register-wrapper ml-110 mt-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="register-switcher text-center">
+                        <a href="/user/register/" class="resister-btn active">ثبت نام</a>
+                        <a href="/user/login/" class="login-btn">ورود</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-100 justify-content-center" id="temp-1554">
+                <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10">
+                    <div class="reg-login-forms">
+                        <h4 class="reg-login-title text-center">
+                            فقط در چند دقیقه عضو جامعه ورکانا شوید!
+                        </h4>
+                        <div id="register-form">
+                            <div class="reg-input-group">
+                                <label for="fname">نام کوچک*</label>
+                                <input type="text" id="fname" placeholder="نام شما" >
+                            </div>
+                            <div class="reg-input-group">
+                                <label for="lname">نام خانوادگی*</label>
+                                <input type="text" id="lname" placeholder="نام خانوادگی شما" >
+                            </div>
+                            <div class="reg-input-group">
+                                <label for="mobile">شماره موبایل *</label>
+                                <input type="text" id="mobile" placeholder="*********09">
+                            </div>
+                            <div class="reg-input-group">
+                                <label for="gender">جنسیت</label>
+                                <select id="gender" onchange="$('#submite-btn').prop('disabled', false);">
+                                        <option value="False">خانم</option>
+                                        <option value="True">آقا</option>
+                                </select>
+                            </div>
+                            <div class="reg-input-group">
+                                <label for="password">کلمه عبور *</label>
+                                <input type="password" id="password" placeholder="رمز عبور را وارد کنید" >
+                            </div>
+                            <div class="reg-input-group">
+                                <label for="re_password">تایید رمز عبور *</label>
+                                <input type="password" id="re_password" placeholder="رمز عبور را تایید کنید" >
+                            </div>
+                            <div class="reg-input-group reg-check-input d-flex align-items-center">
+                                <label for="form-check">با ثبت نام در سایت شما با <a href="#">همه شرایط و خط مشی</a>  موافقت میکنید!</label>
+                            </div>
+                            <div class="reg-input-group reg-submit-input d-flex align-items-center">
+                                <input type="button" onclick="Register()" id="submite-btn" value="ثبت نام">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+    {% csrf_token %}
+
+{% endblock %}
+
+
+
+{% block footer_links %}
+    <script src="/static/users/js/register.js"></script>
+{% endblock %}

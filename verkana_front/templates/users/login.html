@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+
+
+{% block title %}
+    صفحه ورود | ورکانا
+{% endblock %}
+
+{% block content %}
+
+
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-shape1 position-absolute bottom-0 end-0">
+                            <img src="../images/shapes/bs-right.png" alt="">
+                        </div>
+                        <div class="breadcrumb-shape2 position-absolute top-0 start-0">
+                            <img src="../images/shapes/bs-left.png" alt="">
+                        </div>
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">ورود</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                <li>ورود</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="register-wrapper ml-110 mt-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="register-switcher text-center">
+                        <a href="/user/register/" class="resister-btn">ثبت نام</a>
+                        <a href="/user/login/" class="login-btn active">ورود</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-100 justify-content-center">
+                <div class="col-xxl-6 col-xl-6 col-lg-8 col-md-10">
+                    <div class="reg-login-forms">
+                        <h4 class="reg-login-title text-center">
+                            وارد حساب کاربری خود شوید
+                        </h4>
+                        <div id="login-form">
+                            <div class="reg-input-group">
+                                <label for="fname">نام کاربری *</label>
+                                <input type="text" id="fname" placeholder="شماره تماس خود را وارد کنید" required>
+                            </div>
+                            <div class="reg-input-group">
+                                <label for="password">کلمه عبور *</label>
+                                <input type="password" id="password" placeholder="رمز عبور خود را وارد کنید" required>
+                            </div>
+                            <div class="password-recover-group d-flex justify-content-between">
+                                <div class="reg-input-group reg-check-input d-flex align-items-center">
+                                    <input type="checkbox" id="form-check" required>
+                                    <label for="form-check">مرا به خاطر بسپار</label>
+                                </div>
+                                <div class="forgot-password-link">
+                                    <a href="/user/forget_password/">رمز عبور را فراموش کرده اید؟</a>
+                                </div>
+                            </div>
+                            <div class="reg-input-group reg-submit-input d-flex align-items-center">
+                                <input type="button" id="submite-btn" value="ورود" onclick="login()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+    {% csrf_token %}
+
+{% endblock %}
+
+
+{% block footer_links %}
+    <script src="/static/users/js/login.js"></script>
+{% endblock %}

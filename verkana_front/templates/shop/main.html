@@ -1,0 +1,624 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load render_partial %}
+
+
+{% block content %}
+
+{% render_partial 'shop.views.MixinViewPartial' %}
+{% render_partial 'shop.views.SideBarPartial' %}
+{% render_partial 'shop.views.HeaderPartial' %}
+
+
+<!-- region Competitive Advantage -->
+<div class="hero-area ml-110">
+    <div class="row">
+        <section class="col-12 imageheadrecoffee position-relative">
+            <img src="{{ base_url }}{{ site_settings.0.background_advantage }}" alt="coffee"
+                 title="coffee image header">
+            <div class="pe-5 ps-4 row justify-content-between justify-content-md-around position-absolute my-4 competitive_Advantage">
+                {% for advantage in advantages %}
+                <div class="col-6 col-lg-3 w-auto banner-feature-item position-relative rounded"
+                     style="background: {{ advantage.color }}">
+                    <div class="b-feature-shape">
+                        <img src="/static/shared/image/banner-feature-shape.png" alt="" class="position-absolute">
+                    </div>
+                    <div class="feature-head d-flex align-items-center position-relative">
+                        <div class="feature-icon">
+                            <img style="padding: 5px; background: {{ advantage.color }}" src="{{ base_url }}{{ advantage.image }}" alt="{{ advantage.advantage_name }}" width="1px">
+                        </div>
+                        <p>
+                            {{ advantage.advantage_name }}
+                        </p>
+                    </div>
+                    {% autoescape off %}
+                    <h5>
+                        {{ advantage.advantage_description }}
+                    </h5>
+                    {% endautoescape %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- endregion -->
+
+
+<!-- region Search Bar -->
+<div class="searchbar-area ml-110">
+    <div class="container-fluid">
+        <form method="post" class="main-searchbar-form" action="/search/">
+            {% csrf_token %}
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-4">
+                    <div class="custom-select product-filter-options">
+                        <select name="category_id">
+                            <option value="all">همه دسته بندی ها</option>
+                            {% for product_group in product_groups %}
+                                <option value="{{ product_group.id }}">{{ product_group.group_title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="searchbar-input">
+                        <input type="text" name="value" placeholder="دنبال چه محصولی می گردید؟">
+                        <button type="submit">جستجو</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- endregion -->
+
+
+<!-- region Product Category -->
+<div class="top-product-wrapper ml-110 mt-50">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-11 mb-25">
+                <div class="section-head">
+                    <h2 class="section-title"> دسته بندی ها </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row flex-row-reverse">
+            <div class="col-12">
+                <div class="nav nav-pills category_tabs_circle" id="v-pills-tab" role="tablist"
+                     aria-orientation="vertical">
+                    {% for product_group in product_groups %}
+                        <button class="nav-link category-tab"
+                                onclick="product_by_category({{ product_group.id }}, '{{ base_url }}')"
+                                id="eg-pills-nh1"
+                                data-bs-toggle="pill" type="button"
+                                aria-selected="true">
+                            {{ product_group.group_title }}
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="tab-content eg-tab-content tab_content_category" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active eg-product-tab-pane" id="eg-pills-one999" role="tabpanel"
+                         aria-labelledby="eg-pills-999">
+                        <div class="row" id="show_product_category">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- endregion -->
+
+
+<!-- region slider prosuct __ by discount -->
+<div class="tranding-product-wrapper ml-110 mt-70 position-relative">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 mb-50">
+                <div class="section-head">
+                    <a href="/shop/">
+                        <h2 class="section-title"> پر تخفیف ترین ها<span class="m-3" style="transform: rotate(180deg);display: inline-block">&#10137;</span></h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div
+                    class="swiper-tranding-container overflow-hidden pb-30 swiper-container-horizontal swiper-container-rtl">
+                <div class="swiper-wrapper"
+                     style="transform: translate3d(1820px, 0px, 0px); transition-duration: 0ms;">
+                    {% for product in products_by_discount %}
+                        <div class="swiper-slide"
+                             style="width: 236px; margin-left: 24px;">
+                            <div class="product-card-xl">
+                                <div class="product-img-xl">
+                                    <a href="{% url 'shop:product_detail' product.slug %}" title="{{ product.group_image_title }}">
+                                        <img src="{{ base_url }}{{ product.cover_picture }}"
+                                             alt="{{ product.group_image_alt }}" class="img-fluid">
+                                    </a>
+                                    <div class="product-actions-xl">
+                                        <a href="{% url 'shop:product_detail' product.slug %}" title="{{ product.group_image_title }}"><i class="flaticon-search"></i></a>
+                                        <a class="cursor-pointer" onclick="Additem({{ product.id }}, 1)"><i class="flaticon-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-content-xl text-center">
+                                    <a href="{% url 'shop:product_detail' product.slug %}" title="{{ product.group_image_title }}" class="product-title">{{ product.product_name }}
+                                    </a>
+                                    {% if product.product_discount > 0 %}
+                                        <div class="product-price">
+                                            <del class="old-price">{{ product.sell_price|intcomma:False }} تومان</del>
+                                            <ins class="new-price">{{ product.product_after_discount|intcomma:False }}
+                                                تومان
+                                            </ins>
+                                        </div>
+                                    {% else %}
+                                        <div class="product-price">
+                                            <ins class="new-price">{{ product.product_after_discount|intcomma:False }}
+                                                تومان
+                                            </ins>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"><i
+                        class="flaticon-arrow-pointing-to-left"></i></div>
+                <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"><i
+                        class="flaticon-arrow-pointing-to-right"></i></div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- endregion -->
+
+
+<!-- region slider prosuct __ by view -->
+<div class="tranding-product-wrapper ml-110 mt-70 position-relative">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 mb-50">
+                <div class="section-head">
+                    <a href="/shop/">
+                        <h2 class="section-title"> پر بازدید ترین ها<span class="m-3" style="transform: rotate(180deg);display: inline-block">&#10137;</span></h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div
+                    class="swiper-tranding-container overflow-hidden pb-30 swiper-container-horizontal swiper-container-rtl">
+                <div class="swiper-wrapper"
+                     style="transform: translate3d(1820px, 0px, 0px); transition-duration: 0ms;">
+                    {% for product in products_by_view %}
+                        <div class="swiper-slide"
+                             style="width: 236px; margin-left: 24px;">
+                            <div class="product-card-xl">
+                                <div class="product-img-xl">
+                                    <a href="{% url 'shop:product_detail' product.slug %}" title="{{ product.group_image_title }}">
+                                        <img src="{{ base_url }}{{ product.cover_picture }}"
+                                             alt="{{ product.group_image_alt }}" class="img-fluid">
+                                    </a>
+                                    <div class="product-actions-xl">
+                                        <a href="{% url 'shop:product_detail' product.slug %}"><i class="flaticon-search"></i></a>
+                                        <a class="cursor-pointer" onclick="Additem({{ product.id }}, 1)"><i class="flaticon-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-content-xl text-center">
+                                    <a href="{% url 'shop:product_detail' product.slug %}" class="product-title">{{ product.product_name }}
+                                    </a>
+                                    {% if product.product_discount > 0 %}
+                                        <div class="product-price">
+                                            <del class="old-price">{{ product.sell_price|intcomma:False }} تومان</del>
+                                            <ins class="new-price">{{ product.product_after_discount|intcomma:False }}
+                                                تومان
+                                            </ins>
+                                        </div>
+                                    {% else %}
+                                        <div class="product-price">
+                                            <ins class="new-price">{{ product.product_after_discount|intcomma:False }}
+                                                تومان
+                                            </ins>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"><i
+                        class="flaticon-arrow-pointing-to-left"></i></div>
+                <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"><i
+                        class="flaticon-arrow-pointing-to-right"></i></div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- endregion -->
+
+
+<!-- region slider prosuct __ by sell_count -->
+<div class="tranding-product-wrapper ml-110 mt-70 position-relative">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 mb-50">
+                <div class="section-head">
+                    <a href="/shop/">
+                        <h2 class="section-title">پر فروش ترین ها<span class="m-3" style="transform: rotate(180deg);display: inline-block">&#10137;</span></h2>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div
+                    class="swiper-tranding-container overflow-hidden pb-30 swiper-container-horizontal swiper-container-rtl">
+                <div class="swiper-wrapper"
+                     style="transform: translate3d(1820px, 0px, 0px); transition-duration: 0ms;">
+                    {% for product in product_by_sell_count %}
+                        <div class="swiper-slide"
+                             style="width: 236px; margin-left: 24px;">
+                            <div class="product-card-xl">
+                                <div class="product-img-xl">
+                                    <a href="{% url 'shop:product_detail' product.slug %}" title="{{ product.group_image_title }}">
+                                        <img src="{{ base_url }}{{ product.cover_picture }}"
+                                             alt="{{ product.group_image_alt }}" class="img-fluid">
+                                    </a>
+                                    <div class="product-actions-xl">
+                                        <a href="{% url 'shop:product_detail' product.slug %}"><i class="flaticon-search"></i></a>
+                                        <a class="cursor-pointer" onclick="Additem({{ product.id }}, 1)"><i class="flaticon-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-content-xl text-center">
+                                    <a href="{% url 'shop:product_detail' product.slug %}" class="product-title">{{ product.product_name }}
+                                    </a>
+                                    {% if product.product_discount > 0 %}
+                                        <div class="product-price">
+                                            <del class="old-price">{{ product.sell_price|intcomma:False }} تومان</del>
+                                            <ins class="new-price">{{ product.product_after_discount|intcomma:False }}
+                                                تومان
+                                            </ins>
+                                        </div>
+                                    {% else %}
+                                        <div class="product-price">
+                                            <ins class="new-price">{{ product.product_after_discount|intcomma:False }}
+                                                تومان
+                                            </ins>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"><i
+                        class="flaticon-arrow-pointing-to-left"></i></div>
+                <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"><i
+                        class="flaticon-arrow-pointing-to-right"></i></div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- endregion -->
+
+
+<!-- region All Product -->
+<div class="top-product-wrapper ml-110 mt-100 mb-5 pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-11 mb-25">
+                <div class="section-head">
+                    <a href="/shop/"><h2 class="section-title text-center"> تمام محصولات </h2></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mx-auto">
+                <div class="tab-content eg-tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active eg-product-tab-pane" id="eg-pills-one999" role="tabpanel"
+                         aria-labelledby="eg-pills-999">
+                        <div class="row">
+                            <!-- item -->
+                            {% for product in products_by_register_date %}
+                                <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mx-auto mx-sm-0">
+                                    <div class="product-card-l">
+                                        <div class="product-img">
+                                            <a href="{% url 'shop:product_detail' product.slug %}" title="{{ product.group_image_title }}">
+                                                <img src="{{ base_url }}{{ product.cover_picture }}"
+                                                     alt="{{ product.group_image_alt }}">
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="{% url 'shop:product_detail' product.slug %}"><i class="flaticon-search"></i></a>
+                                                <a class="cursor-pointer" onclick="Additem({{ product.id }}, 1)"><i
+                                                        class="flaticon-shopping-cart cursor-pointer"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-title d-flex justify-content-center">
+                                                <a href="{% url 'shop:product_detail' product.slug %}">
+                                                    {{ product.product_name }}
+                                                </a>
+                                            </h3>
+                                            {% if product.product_discount > 0 %}
+                                                <div class="product-price">
+                                                    <span class="text-white-50"> قیمت: </span>
+                                                    <del class="old-price">{{ product.sell_price|intcomma:False }}
+                                                        تومان
+                                                    </del>
+                                                    <ins class="new-price">
+                                                        {{ product.product_after_discount|intcomma:False }}
+                                                        تومان
+                                                    </ins>
+                                                </div>
+                                            {% else %}
+                                                <div class="product-price">
+                                                    <span class="text-white-50"> قیمت: </span>
+                                                    <ins class="new-price">
+                                                        {{ product.product_after_discount|intcomma:False }}
+                                                        تومان
+                                                    </ins>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+
+                            <!-- item -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- endregion -->
+
+
+<!-- region comment -->
+
+{#<div class="hero-area ml-110">#}
+{#    <div class="row">#}
+{#        <!-- Slider -->#}
+{#        <div class="col-12">#}
+{#            <div class="row">#}
+{#                <div#}
+{#                        class="swiper-container hero-swiper-container swiper-container-fade swiper-container-horizontal swiper-container-rtl">#}
+{#                    <div class="swiper-wrapper" style="transition-duration: 0ms;">#}
+{#                        <div class="swiper-slide hero-slider-item d-flex justify-content-center align-items-center position-relative "#}
+{#                             style="background: url(&quot;/static/shared/image/537c52a0977b4cefb9b7101991589a77.jpg&quot;) center center / cover no-repeat; width: 1137px; transition-duration: 0ms; opacity: 0; transform: translate3d(0px, 0px, 0px);"#}
+{#                             data-swiper-slide-index="1">#}
+{#                            <div class="slider-image-layer">#}
+{#                            </div>#}
+{#                            <div class="slider-content position-relative text-center">#}
+{#                                <h5 class="slider-sub-title">توت#}
+{#                                    فرنگی</h5>#}
+{#                                <h2 class="slider-main-title">توت#}
+{#                                    فرنگی تازه</h2>#}
+{#                                <div class="banner-btn">#}
+{#                                    <a href="#" title="قهوه عربیکا" class="eg-btn-xl"> مشاهده همه مجموعه</a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="swiper-slide hero-slider-item d-flex justify-content-center align-items-center position-relative"#}
+{#                             style="background: url(&quot;/static/shared/image/4f3b4d220dd246a0aabc8a0ee7b27263.jpg&quot;) center center / cover no-repeat; width: 1137px; transition-duration: 0ms; opacity: 0; transform: translate3d(1137px, 0px, 0px);"#}
+{#                             data-swiper-slide-index="0">#}
+{#                            <div class="slider-image-layer">#}
+{#                            </div>#}
+{#                            <div class="slider-content position-relative text-center">#}
+{#                                <h5 class="slider-sub-title">گوجه#}
+{#                                    خانگی</h5>#}
+{#                                <h2 class="slider-main-title">خرید به#}
+{#                                    صرفه</h2>#}
+{#                                <div class="banner-btn">#}
+{#                                    <a href="#" title="گوجه خانگی" class="eg-btn-xl"> مشاهده همه مجموعه</a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="swiper-slide hero-slider-item d-flex justify-content-center align-items-center position-relative"#}
+{#                             style="background: url(&quot;/static/shared/image/537c52a0977b4cefb9b7101991589a77.jpg&quot;) center center / cover no-repeat; width: 1137px; transition-duration: 0ms; opacity: 0; transform: translate3d(2274px, 0px, 0px);"#}
+{#                             data-swiper-slide-index="1">#}
+{#                            <div class="slider-image-layer">#}
+{#                            </div>#}
+{#                            <div class="slider-content position-relative text-center">#}
+{#                                <h5 class="slider-sub-title">توت#}
+{#                                    فرنگی</h5>#}
+{#                                <h2 class="slider-main-title">توت#}
+{#                                    فرنگی تازه</h2>#}
+{#                                <div class="banner-btn">#}
+{#                                    <a href="#" title="قهوه عربیکا" class="eg-btn-xl"> مشاهده همه مجموعه</a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="swiper-slide hero-slider-item d-flex justify-content-center align-items-center position-relative"#}
+{#                             style="background: url(&quot;/static/shared/image/4f3b4d220dd246a0aabc8a0ee7b27263.jpg&quot;) center center / cover no-repeat; width: 1137px; transition-duration: 0ms; opacity: 1; transform: translate3d(3411px, 0px, 0px);"#}
+{#                             data-swiper-slide-index="0">#}
+{#                            <div class="slider-image-layer">#}
+{#                            </div>#}
+{#                            <div class="slider-content position-relative text-center">#}
+{#                                <h5 class="slider-sub-title">گوجه#}
+{#                                    خانگی</h5>#}
+{#                                <h2 class="slider-main-title">خرید به#}
+{#                                    صرفه</h2>#}
+{#                                <div class="banner-btn">#}
+{#                                    <a href="#" title="گوجه خانگی" class="eg-btn-xl"> مشاهده همه مجموعه</a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"><i#}
+{#                            class="flaticon-arrow-pointing-to-right"></i></div>#}
+{#                    <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"><i#}
+{#                            class="flaticon-arrow-pointing-to-left"></i></div>#}
+{#                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{##}
+{##}
+{#<!-- Banner -->#}
+{#<div class="banner-md-area ml-110">#}
+{#    <div class="container-fluid">#}
+{#        <div class="row">#}
+{#            <div title="لموی " class="col-lg-4 col-md-6">#}
+{#                <div class="banner-md banner-md1 position-relative">#}
+{#                    <div class="banner-img">#}
+{#                        <img src="/static/shared/image/40a1c72edc1747eeb7147542382c9f95.jpg" alt="لیمو"#}
+{#                             class="img-fluid">#}
+{#                    </div>#}
+{#                    <div class="banner-md-content position-absolute">#}
+{#                        <div class="banner-md-content-wrap">#}
+{#                            <div class="banner-lavel">لموی#}
+{#                            </div>#}
+{#                            <h3 class="banner-title">#}
+{#                                لموی#}
+{#                            </h3>#}
+{#                            <div class="banner-btn">#}
+{#                                <a title="https://localhost:44311/swagger/index.html"#}
+{#                                   href="https://localhost:44355/Product/Details/%D9%81%D8%B1%D9%88%D8%B4-%D9%84%D8%A8%D8%A7%D8%B3-%D8%B2%D9%86%D8%A7%D9%86%D9%87-%D9%85%D8%AE%D8%B5%D9%88%D8%B5-%D8%AA%D8%A7%D8%A8%D8%B3%D8%AA%D8%A7%D9%86">اکنون#}
+{#                                    خرید کنید</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div title="لیموی شربتی" class="col-lg-4 col-md-6">#}
+{#                <div class="banner-md banner-md1 position-relative">#}
+{#                    <div class="banner-img">#}
+{#                        <img src="/static/shared/image/b106c2d62a194dd294a2a4668aabaaa0.jpg" alt="لیموی "#}
+{#                             class="img-fluid">#}
+{#                    </div>#}
+{#                    <div class="banner-md-content position-absolute">#}
+{#                        <div class="banner-md-content-wrap">#}
+{#                            <div class="banner-lavel">لیموی#}
+{#                                شربتی#}
+{#                            </div>#}
+{#                            <h3 class="banner-title">#}
+{#                                لیموی شربتی#}
+{#                            </h3>#}
+{#                            <div class="banner-btn">#}
+{#                                <a title="رفتن به صفحه مورد نظر"#}
+{#                                   href="https://localhost:44355/Product/Details/%D9%81%D8%B1%D9%88%D8%B4-%D9%87%D9%88%D8%AF%DB%8C-%D8%B2%DB%8C%D9%BE%DB%8C-%D8%A2%D8%B3%D8%AA%D8%B1">اکنون#}
+{#                                    خرید کنید</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div title="فروش پاییزی صیفی جات" class="col-lg-4 col-md-6">#}
+{#                <div class="banner-md banner-md1 position-relative">#}
+{#                    <div class="banner-img">#}
+{#                        <img src="/static/shared/image/b8d093e30f924d8bae8383dadd7e0795.jpg" alt="محصولات پاییزی"#}
+{#                             class="img-fluid">#}
+{#                    </div>#}
+{#                    <div class="banner-md-content position-absolute">#}
+{#                        <div class="banner-md-content-wrap">#}
+{#                            <div class="banner-lavel">فروش#}
+{#                                پاییزی صیفی#}
+{#                                جات#}
+{#                            </div>#}
+{#                            <h3 class="banner-title">#}
+{#                                فروش پاییزی#}
+{#                                صیفی جات#}
+{#                            </h3>#}
+{#                            <div class="banner-btn">#}
+{#                                <a title="ایول بزن بریم" href="https://localhost:44311/swagger/index.html12">اکنون#}
+{#                                    خرید کنید</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+<!-- endregion -->
+
+
+<!-- region Articles -->
+<div class="blog-area ml-110 mt-100 position-relative">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 mb-25">
+                <div class="section-head">
+                    <h2 class="section-title">آخرین بلاگ های ورکانا</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="swiper-blog-container overflow-hidden swiper-container-horizontal swiper-container-rtl">
+                <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px);">
+                    {% for blog in blogs %}
+                        <div class="swiper-slide"
+                             data-swiper-slide-index="0" style="width: 409.333px; margin-left: 24px;">
+                            <div class="blog-card-m">
+                                <div class="blog-img-m">
+                                    <a title="شربت" href="/blogs/detail/{{ blog.id }}"><img
+                                            src="{{ base_url }}{{ blog.picture }}"
+                                            style="width: 314px; height: 260px;" alt="{{ blog.picture_alt }}"></a>
+                                </div>
+                                <div class="blog-content-m">
+                                    <ul class="blog-info d-flex">
+                                        <li class="blog-date">
+                                            <i class="flaticon-time"></i>
+                                            {{ blog.register_date }}
+                                        </li>
+                                    </ul>
+                                    <div class="blog-bottom">
+                                        <h4 class="blog-title">
+                                            <a href="/blogs/detail/{{ blog.id }}">
+                                                {{ blog.title }}
+                                            </a>
+                                        </h4>
+                                        <div class="blog-link-btn">
+                                            <a href="/blogs/detail/{{ blog.id }}">
+                                                مشاهده وبلاگ <i class="flaticon-arrow-pointing-to-left"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"><i
+                        class="flaticon-arrow-pointing-to-left"></i></div>
+                <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"><i
+                        class="flaticon-arrow-pointing-to-right"></i></div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- endregion -->
+
+
+{% render_partial 'shop.views.FooterPartial' %}
+
+{% block footer_links %}
+    <script src="/static/shop/js/shop_main.js"></script>
+{% endblock %}
+
+
+{% endblock %}
+
+

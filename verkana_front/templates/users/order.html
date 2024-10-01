@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+{% block title %}
+    لیست فاکتور ها | ورکانا
+{% endblock %}
+
+
+{% block content %}
+
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">داشبورد</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/user/profile/">پروفایل</a> <i class="flaticon-arrow-pointing-to-left"></i>
+                                </li>
+                                <li>لیست فاکتور ها</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashbord-wrapper ml-110 mt-100">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12">
+                    <div class="dashbord-switcher">
+                        <a href="/user/profile/"><i class="flaticon-user"></i> پروفایل من</a>
+                        <a href="/user/profile/" class="active"><i class="flaticon-shopping-bag"></i> سفارشات من</a>
+                        <a href="/user/logout/"><i class="flaticon-logout"></i> خروج</a>
+                    </div>
+                </div>
+                <div class="col-xxl-8 col-xl-8 col-lg-8">
+                    <div class="order-details" style="min-height: 370px;">
+                        <table class="table order-table mb-0">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="order-id">شماره سفارش</th>
+                                <th scope="col" class="order-date">تاریخ سفارش</th>
+                                <th scope="col" class="order-status">وضعیت</th>
+                                <th scope="col" class="order-status">مبلغ کل</th>
+                                <th scope="col" class="order-status"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for factor in factors %}
+                                <tr>
+                                    <td class="order-id">{{ factor.id }}</td>
+                                    <td class="order-date">{{ factor.register_date }}</td>
+                                    <td class="order-status">
+
+                                        {% if factor.invoice_status == '1' %}
+                                            در حال پیگیری
+                                        {% elif factor.invoice_status == '2' %}
+                                            تاییده شده
+                                        {% elif factor.invoice_status == '3' %}
+                                            تحویل به پست
+                                        {% elif factor.invoice_status == '4' %}
+                                            تحویل داده شده به کاربر
+                                        {% endif %}
+
+                                    </td>
+                                    <td class="order-date">{{ factor.payable_amount|intcomma:False }}</td>
+                                    <td class="order-id">
+                                        <a class="btn btn-primary" href="{{ factor.id }}">
+                                            جزئیات
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+    {% csrf_token %}
+
+{% endblock %}
+
+

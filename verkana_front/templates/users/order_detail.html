@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+{% block title %}
+    جزئیات فاکتور | ورکانا
+{% endblock %}
+
+{% block content %}
+
+    {% render_partial 'shop.views.MixinViewPartial' %}
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+    <div class="cart-area mt-100 ml-110">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-12 col-xl-12 col-md-12 col-sm-8">
+                    <table class="table cart-table">
+                        <thead>
+                        <tr>
+                            <th scope="col">تصویر</th>
+                            <th scope="col">عنوان محصول</th>
+                            <th scope="col">قیمت اصلی</th>
+                            <th scope="col">قیمت با تخفیف</th>
+                            <th scope="col">تعداد</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in factor.invoice_items %}
+                            <tr class="s4">
+                                <td class="image-col">
+                                    <img src="{{ base_url }}{{ item.product.cover_picture }}" alt="{{ item.product.group_image_alt }}">
+                                </td>
+                                <td class="product-col">
+                                    <a href="/product_detail/{{ item.product.slug }}" class="product-title">
+                                        {{ item.product.product_name }}
+                                    </a>
+                                </td>
+                                <td class="unite-col">
+                                    <del><span class="unite-price-del"></span></del>
+                                    <span
+                                            class="unite-price">{{ item.product.sell_price|intcomma:False }} تومان </span></td>
+
+                                {% if item.product.product_discount %}
+                                    <td class="discount-col"><span
+                                            class="discount-price">تومان {{ item.product.product_after_discount|intcomma:False }}</span>
+                                    </td>
+                                {% endif %}
+
+                                <td class="quantity-col">
+                                    {{ item.count }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-60">
+                <div class="col-xxl-12 col-lg-12 mx-auto">
+                    <table class="table total-table">
+                        <tbody>
+                        <tr>
+                            <td class="tt-left">مجموع سبد خرید</td>
+                            <td></td>
+                            <td class="tt-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="tt-left">کل هزینه</td>
+                            <td>
+                                <ul class="cart-cost-list">
+                                    <li>کل (مبلغ پرداختی)</li>
+                                </ul>
+                            </td>
+                            <td class="tt-right cost-info-td">
+                                <ul class="cart-cost">
+                                    <li>{{ factor.payable_amount|intcomma:False }} تومان</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+{#                    {% if factor.is_pay %}#}
+{#                    {% else %}#}
+{#                        <div class="cart-proceed-btns">#}
+{#                            <form method="post" action="#">#}
+{#                                <button type="submit" class="cart-proceed cursor-pointer">پرداخت</button>#}
+{#                            </form>#}
+{#                            <button class="cart-proceed cursor-pointer mx-2 text-danger"#}
+{#                                    onclick="returnFactor({{ factor.id }})">مرجوع کردن#}
+{#                            </button>#}
+{#                        </div>#}
+{#                    {% endif %}#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+    {% csrf_token %}
+
+
+{% endblock %}

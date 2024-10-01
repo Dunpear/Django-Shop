@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+
+
+{% block title %}
+    پروفایل | ورکانا
+{% endblock %}
+
+
+{% block content %}
+
+    {% render_partial 'shop.views.MixinViewPartial' %}
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-shape1 position-absolute bottom-0 end-0">
+                            <img src="../images/shapes/bs-right.png" alt="">
+                        </div>
+                        <div class="breadcrumb-shape2 position-absolute top-0 start-0">
+                            <img src="../images/shapes/bs-left.png" alt="">
+                        </div>
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">حساب من</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="index.html">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                <li>حساب من</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashbord-wrapper ml-110 mt-100">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12">
+                    <div class="dashbord-switcher">
+                        <a href="dashboard.html" class="active"><i class="flaticon-dashboard"></i> داشبورد</a>
+                        <a href="profile.html"><i class="flaticon-user"></i> پروفایل من</a>
+                        <a href="order.html"><i class="flaticon-shopping-bag"></i> سفارشات من</a>
+                        <a href="setting.html"><i class="flaticon-settings"></i> تنظیمات اکانت</a>
+                        <a href="#"><i class="flaticon-logout"></i> خروج</a>
+                    </div>
+                </div>
+                <div class="col-xxl-8 col-xl-8 col-lg-8">
+                    <div class="dashbord-product-status text-center">
+                        <h5 class="dashbord-title">سلام کامرون ویلیامسون</h5>
+                        <div class="row">
+                            <div class="col-lg-3  col-md-3 col-sm-6 ">
+                                <div class="product-status-single">
+                                    <h3>00</h3>
+                                    <h5>در انتظار</h5>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 ">
+                                <div class="product-status-single">
+                                    <h3>00</h3>
+                                    <h5>در حال پردازش</h5>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 ">
+                                <div class="product-status-single">
+                                    <h3>00</h3>
+                                    <h5>انتخاب شد</h5>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 ">
+                                <div class="product-status-single">
+                                    <h3>00</h3>
+                                    <h5>کامل</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load render_partial %}
+
+{% block title %}
+    {{ title_of_result }}
+{% endblock %}
+
+{% block content %}
+
+    {% render_partial 'shop.views.MixinViewPartial' %}
+
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">{{ title_of_result }}</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i>
+                                </li>
+                                <li>{{ title_of_result }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-area ml-110 mt-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xxl-3 col-xl-4 col-lg-4">
+                    <div class="product-sidebar">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="sidebar-searchbar-wrap">
+                                    <form action="/search/" method="POST" class="sidebar-searchbar-form">
+                                        <input type="text" id="sidebar-search-input"
+                                               placeholder="دنبال چی میگردی؟" name="value">
+                                        <input type="hidden" name="category_id" value="all">
+                                        {% csrf_token %}
+                                        <button type="submit"><i class="bi bi-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="top-sell-cards">
+                                    <h5 class="sb-title">فروش برتر این هفته</h5>
+                                    <div class="row">
+                                        {% for product in best_selling %}
+                                            <div class="co-lg-12">
+                                                <div class="product-card-m d-flex align-content-center">
+                                                    <div class="product-img-m">
+                                                        <a href="{% url 'shop:product_detail' product.slug %}"><img
+                                                                src="{{ base_url }}{{ product.cover_picture }}"
+                                                                alt=""></a>
+                                                        <div class="product-cart-icon"><a
+                                                                href="{% url 'shop:product_detail' product.slug %}"><i
+                                                                class="flaticon-shopping-cart"></i></a></div>
+                                                    </div>
+                                                    <div class="product-details-m">
+                                                        <a class="product-title-m"
+                                                           href="{% url 'shop:product_detail' product.slug %}">
+                                                            {{ product.product_name }}
+                                                        </a>
+                                                        <div class="product-price">
+                                                            {% if product.product_discount %}
+                                                                <del class="old-price">{{ product.sell_price }} تومان
+                                                                </del>
+                                                                <ins class="new-price">{{ product.product_after_discount }}
+                                                                    تومان
+                                                                </ins>
+                                                            {% else %}
+                                                                <ins class="new-price">{{ product.product_after_discount }}
+                                                                    تومان
+                                                                </ins>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-9 col-xl-8 col-lg-8">
+                    <div class="product-sorting d-flex justify-content-between align-items-center">
+                        <div class="show-text"><span>نمایش 1-30 از {{ page_obj.paginator.num_pages }} صفحه</span></div>
+                        {% if category_detail == True %}
+                        {% elif type == 'shop' %}
+                            <div class="category-sort ">
+                                <select name="category-sort" id="category-sort"
+                                        onchange="change_order(this, {{ page_obj.number }})">
+                                    {% if orders == 'discount' %}
+                                        <option value="discount">پر تخفیف ترین</option>
+                                        <option value="view">پر بازدید ترین</option>
+                                        <option value="sell_count">پر فروش ترین</option>
+                                        <option value="price_gt">گران ترین</option>
+                                        <option value="price_lt">ارزان ترین</option>
+                                    {% endif %}
+                                    {% if orders == 'view' %}
+                                        <option value="view">پر بازدید ترین</option>
+                                        <option value="sell_count">پر فروش ترین</option>
+                                        <option value="discount">پر تخفیف ترین</option>
+                                        <option value="price_gt">گران ترین</option>
+                                        <option value="price_lt">ارزان ترین</option>
+                                    {% endif %}
+                                    {% if orders == 'sell_count' %}
+                                        <option value="sell_count">پر فروش ترین</option>
+                                        <option value="view">پر بازدید ترین</option>
+                                        <option value="discount">پر تخفیف ترین</option>
+                                        <option value="price_gt">گران ترین</option>
+                                        <option value="price_lt">ارزان ترین</option>
+                                    {% endif %}
+                                    {% if orders == 'price_gt' %}
+                                        <option value="price_gt">گران ترین</option>
+                                        <option value="sell_count">پر فروش ترین</option>
+                                        <option value="view">پر بازدید ترین</option>
+                                        <option value="discount">پر تخفیف ترین</option>
+                                        <option value="price_lt">ارزان ترین</option>
+                                    {% endif %}
+                                    {% if orders == 'price_lt' %}
+                                        <option value="price_lt">ارزان ترین</option>
+                                        <option value="price_gt">گران ترین</option>
+                                        <option value="sell_count">پر فروش ترین</option>
+                                        <option value="view">پر بازدید ترین</option>
+                                        <option value="discount">پر تخفیف ترین</option>
+                                    {% endif %}
+                                    {% if orders == None %}
+                                        <option value="">مرتب سازی پیشفرض</option>
+                                        <option value="price_lt">ارزان ترین</option>
+                                        <option value="price_gt">گران ترین</option>
+                                        <option value="sell_count">پر فروش ترین</option>
+                                        <option value="view">پر بازدید ترین</option>
+                                        <option value="discount">پر تخفیف ترین</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <!-- region Search -->
+                        {% if type == 'search' %}
+                            {% for product in result %}
+                                <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
+                                    <div class="product-card-l">
+                                        <div class="product-img">
+                                            <a href="{% url 'shop:product_detail' product.slug %}"
+                                               title="{{ product.group_image_title }}">
+                                                <img src="{{ base_url }}{{ product.cover_picture }}"
+                                                     alt="{{ product.group_image_alt }}">
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="{% url 'shop:product_detail' product.slug %}"><i
+                                                        class="flaticon-search"></i></a>
+                                                <a class="cursor-pointer" onclick="Additem({{ product.id }}, 1)"><i
+                                                        class="flaticon-shopping-cart cursor-pointer"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-title">
+                                                <a href="{% url 'shop:product_detail' product.slug %}">
+                                                    {{ product.product_name }}
+                                                </a>
+                                            </h3>
+                                            {% if product.product_discount > 0 %}
+                                                <div class="product-price">
+                                                    <del class="old-price">{{ product.sell_price|intcomma:False }}
+                                                        تومان
+                                                    </del>
+                                                    <ins class="new-price">
+                                                        {{ product.product_after_discount|intcomma:False }}
+                                                        تومان
+                                                    </ins>
+                                                </div>
+                                            {% else %}
+                                                <div class="product-price">
+                                                    <ins class="new-price">
+                                                        {{ product.product_after_discount|intcomma:False }}
+                                                        تومان
+                                                    </ins>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <!-- endregion -->
+
+                        <!-- region Shop -->
+                        {% if type == 'shop' %}
+                            {% for product in page_obj %}
+                                <div class="col-xxl-3 col-xl-4 col-lg-4 col-sm-4">
+                                    <div class="product-card-l">
+                                        <div class="product-img">
+                                            <a href="{% url 'shop:product_detail' product.slug %}"
+                                               title="{{ product.group_image_title }}">
+                                                <img src="{{ base_url }}{{ product.cover_picture }}"
+                                                     alt="{{ product.group_image_alt }}">
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="{% url 'shop:product_detail' product.slug %}"><i
+                                                        class="flaticon-search"></i></a>
+                                                <a class="cursor-pointer" onclick="Additem({{ product.id }}, 1)"><i
+                                                        class="flaticon-shopping-cart cursor-pointer"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-title">
+                                                <a href="{% url 'shop:product_detail' product.slug %}">
+                                                    {{ product.product_name }}
+                                                </a>
+                                            </h3>
+                                            {% if product.product_discount > 0 %}
+                                                <div class="product-price">
+                                                    <del class="old-price">{{ product.sell_price|intcomma:False }}
+                                                        تومان
+                                                    </del>
+                                                    <ins class="new-price">
+                                                        {{ product.product_after_discount|intcomma:False }}
+                                                        تومان
+                                                    </ins>
+                                                </div>
+                                            {% else %}
+                                                <div class="product-price">
+                                                    <ins class="new-price">
+                                                        {{ product.product_after_discount|intcomma:False }}
+                                                        تومان
+                                                    </ins>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- endregion -->
+
+                        {% if type == 'search' %}
+                        {% else %}
+                            <div class="col-lg-12 mt-50">
+                                <div class="custom-pagination d-flex justify-content-center">
+                                    <ul class="d-flex pagination-links">
+                                        {% if page_obj.has_previous %}
+
+                                            <li>
+                                                <a onclick="change_page({{ page_obj.previous_page_number }}, '{{ orders }}')"
+                                                   class="has-arrow"><i
+                                                        class="flaticon-arrow-pointing-to-right"></i></a></li>
+                                        {% endif %}
+
+                                        <li><a>{{ page_obj.number }}</a></li>
+
+                                        {% if page_obj.has_next %}
+                                            <li>
+                                                <a onclick="change_page({{ page_obj.next_page_number }}, '{{ orders }}')"
+                                                   class="has-arrow"><i
+                                                        class="flaticon-arrow-pointing-to-left"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+{% endblock %}
+
+
+
+{% block footer_links %}
+    <script src="/static/shop/js/shop_main.js"></script>
+{% endblock %}

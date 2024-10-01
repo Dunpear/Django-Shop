@@ -1,0 +1,182 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">
+                    بستن
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="card_modal ">
+
+                    <section class="row justify-content-around">
+                        <section
+                                class="col-12 col-sm-8 col-md-8 row justify-content-center justify-content-sm-around">
+                            {% for product in products %}
+                                <div class="package col">
+                                    <div class="package2">
+                                        <h6 class="text-white p-2">{{ product.product_name }}</h6>
+                                        <img src="{{ base_url }}{{ product.cover_picture }}"
+                                             alt="{{ product.group_image_alt }}" width="160px" height="160px">
+                                        <input type="text" placeholder="مقدار" id="mix_item_{{ product.id }}">
+                                        <button class="btn btn-primary" onclick="AddMixItem({{ product.id }})"> افزودن </button>
+                                    </div>
+                                </div>
+
+                            {% endfor %}
+
+
+                        </section>
+                        <section class="col-12 col-sm-4 col-md-4 pt-3 card_modal_des">
+                            <p>
+                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان
+                                گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و
+                                برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی
+                                می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و
+                                متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی
+                                الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید
+                                داشت که تمام
+                            </p>
+                        </section>
+                    </section>
+                </div>
+                <section class="mx-auto d-flex justify-content-around pt-2">
+                    <button class="btn btn-primary btn-lg" data-bs-target="#exampleModalToggle2"
+                            data-bs-toggle="modal" data-bs-dismiss="modal">
+                        ترکیب
+                    </button>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0">
+                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        data-bs-dismiss="modal">
+                    بازگشت
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card_2">
+                    <div class="card_info justify-content-sm-around">
+                        <h5 class="card_info_title" id="exampleModalToggleLabel2"> ترکیب نهایی </h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                    <span>
+                                        دانه قهوه
+                                    </span>
+                                <div class="quantity">
+                                    <input type="number" min="1" max="90" step="10" value="1">
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                    <span>
+                                        دانه قهوه
+                                    </span>
+                                <div class="quantity">
+                                    <input type="number" min="1" max="90" step="10" value="1">
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                    <span>
+                                        دانه قهوه
+                                    </span>
+                                <div class="quantity">
+                                    <input type="number" min="1" max="90" step="10" value="1">
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                    <span>
+                                        دانه قهوه
+                                    </span>
+                                <div class="quantity">
+                                    <input type="number" min="1" max="90" step="10" value="1">
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                    <span>
+                                        دانه قهوه
+                                    </span>
+                                <div class="quantity">
+                                    <input type="number" min="1" max="90" step="10" value="1">
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                    <div class="quantity-nav">
+                                        <div class="quantity-button quantity-up"><i class="bi bi-plus"></i></div>
+                                        <div class="quantity-button quantity-down"><i class="bi bi-dash"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <section>
+                            قیمت : <span> 3,200,000 ريال</span>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <section class="d-flex justify-content-around">
+                <button class="btn btn-primary"> تکمیل فرایند</button>
+            </section>
+        </div>
+    </div>
+</div>
+

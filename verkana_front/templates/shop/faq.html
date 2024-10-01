@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load render_partial %}
+
+
+{% block content %}
+
+
+    {% render_partial 'shop.views.MixinViewPartial' %}
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-shape1 position-absolute bottom-0 end-0">
+                            <img src="../images/shapes/bs-right.png" alt="">
+                        </div>
+                        <div class="breadcrumb-shape2 position-absolute top-0 start-0">
+                            <img src="../images/shapes/bs-left.png" alt="">
+                        </div>
+                        <div class="breadcrumb-content text-center">
+                            <h2 class="page-title">سوالات متداول</h2>
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                <li>سوالات متداول</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="faq-wrapper mt-100 ml-110">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xxl-9">
+                    <div class="row">
+                        <div class="col-xxl-12 col-lg-12">
+                            <div class="faq-accordions">
+                                <h5>سوالات متداول عمومی</h5>
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    {% for faq in result %}
+                                        <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingfive">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#flush-collapsefive"
+                                                    aria-expanded="false" aria-controls="flush-collapsefive">
+                                                {{ faq.repetitive_question }}
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapsefive" class="accordion-collapse collapse"
+                                             aria-labelledby="flush-headingfive"
+                                             data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                {% autoescape off %}
+                                                {{ faq.repetitive_answer }}
+                                                {% endautoescape %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+
+{% endblock %}

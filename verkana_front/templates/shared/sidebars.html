@@ -1,0 +1,77 @@
+<div class="main-sidebar">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1 col-1">
+                <div class="sidebar-wrap d-flex justify-content-between flex-column">
+                    <div class="sidebar-top d-flex flex-column align-items-center">
+                        <div class="category-icon">
+                            <i class="flaticon-menu"></i>
+                        </div>
+                    </div>
+                    <div class="sidebar-bottom">
+                        <ul class="sidebar-icons">
+                            <li><a>
+                                <button type="button" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" style="background: rgba(10,83,190,0); border: none">
+                                    <i class="flaticon-shopping-bag"></i>
+                                </button>
+                            </a></li>
+                            <li><a href="/user/profile/"><i class="flaticon-user"></i></a></li>
+                            <li class="cart-icon cursor-pointer" onclick="get_detail()">
+                                <i class="flaticon-shopping-cart"></i>
+                                <div class="cart-count"><span>:(</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobil-sidebar">
+    <ul class="mobil-sidebar-icons">
+        <li class="category-icon"><a href="#"><i class="flaticon-menu"></i></a></li>
+        <li><a href="/user/profile/"><i class="flaticon-user"></i></a></li>
+        <li class="cart-icon cursor-pointer" onclick="get_detail()">
+            <a><i class="flaticon-shopping-cart"></i></a>
+            <div class="cart-count"><span>:)</span></div>
+        </li>
+    </ul>
+</div>
+
+
+<div class="cart-sidebar-wrappper">
+
+    <div class="main-cart-sidebar" id="cart_body">
+        <div class="cart-close-icon">
+            <i class="flaticon-letter-x" style="color: white; cursor: pointer;"></i>
+        </div>
+    </div>
+</div>
+
+
+<div class="category-wrapper">
+    <div class="category-bar category-sticky">
+        <h5 class="cb-title text-uppercase category-icon">
+            همه دسته
+            <i class="flaticon-arrow-pointing-to-right"></i>
+        </h5>
+        {{ cart }}
+        <ul class="cb-category-list">
+            {% for product_group in product_groups %}
+                <li class="cb-single-category" title="{{ product_group.group_image_title }}">
+                    <div class="cb-category-icon">
+                        <a href="/category_detail/{{ product_group.id }}/">
+                            <img src="{{ base_url }}{{ product_group.group_image }}"
+                                 alt="{{ product_group.group_image_alt }}">
+                        </a>
+                    </div>
+                    <a href="/category_detail/{{ product_group.id }}/">
+                        <h5 class="cb-category-title">{{ product_group.group_title }}<i class="bi bi-arrow-left"></i>
+                        </h5>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

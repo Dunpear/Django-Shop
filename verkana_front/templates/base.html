@@ -1,0 +1,53 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title> {% block title %}
+        ورکانا
+    {% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/shared/css/swiper.css">
+    <link rel="stylesheet" href="/static/shared/font/flaticon.css">
+    <link rel="stylesheet" href="/static/shared/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/shared/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/shared/css/global.css">
+    <link rel="stylesheet" href="/static/shared/css/style.css">
+    <link rel="stylesheet" href="/static/shared/css/responsive.css">
+    <link rel="stylesheet" href="/static/shared/css/dark.css">
+
+
+    {% block header_links %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+    {% block content %}
+
+    {% endblock %}
+
+
+    <script src="/static/shared/js/jquery-3.6.0.min.js"></script>
+    <script src="/static/shared/js/toastr.min.js"></script>
+    <script src="/static/shared/js/bootstrap.min.js"></script>
+    <script src="/static/shared/js/popper.min.js"></script>
+    <script src="/static/shared/js/swiper.js"></script>
+    <script src="/static/shared/js/jquery-ui.min.js"></script>
+    <script src="/static/shared/js/jquery.fancybox.min.js"></script>
+    <script src="/static/shared/js/main.js"></script>
+    <script src="/static/shared/js/swal.js"></script>
+    <script src="/static/invoice/js/cart_detail.js"></script>
+
+
+    {% block footer_links %}
+
+    {% endblock %}
+
+</body>
+
+</html>

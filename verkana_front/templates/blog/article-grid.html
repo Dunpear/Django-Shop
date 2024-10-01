@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+{% load humanize %}
+{% load render_partial %}
+
+
+{% block content %}
+
+
+    {% render_partial 'shop.views.MixinViewPartial' %}
+
+    {% render_partial 'shop.views.SideBarPartial' %}
+    {% render_partial 'shop.views.HeaderPartial' %}
+
+
+    <div class="breadcrumb-area ml-110">
+        <div class="container-fluid p-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-bg d-flex justify-content-center align-items-center">
+                        <div class="breadcrumb-content text-center">
+                            {% if category %}
+                            <li>   لیست مقالات {{ category_title }} </li>
+                            {% else %}
+                            <h2 class="page-title">لیست مقالات</h2>
+                            {% endif %}
+                            <ul class="page-switcher d-flex ">
+                                <li><a href="/">خانه</a> <i class="flaticon-arrow-pointing-to-left"></i></li>
+                                {% if category %}
+                                <li>{{ category_title }}</li>
+                                {% else %}
+                                <li>مقالات</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blog-grid-wrapper mt-100 ml-110">
+        <div class="container">
+            <div class="row">
+                {% for blog in page_obj %}
+                    <div class="col-xxl-4 col-xl-5 col-lg-6 px-3">
+                        <div class="blog-card-m row">
+                            <div class="blog-img-m col-6 p-0">
+                                <a href="/blogs/detail/{{ blog.id }}"><img src="{{ base_url }}{{ blog.picture }}" alt=""></a>
+                            </div>
+                            <div class="blog-content-m col-6">
+                                <ul class="blog-info d-flex">
+                                    <li class="blog-date">
+                                        <i class="flaticon-time"></i>
+                                        {{ blog.register_date }}
+                                    </li>
+                                </ul>
+                                <div class="blog-bottom">
+                                    <h4 class="blog-title"><a href="/blogs/detail/{{ blog.id }}">{{ blog.title }}</a></h4>
+                                    <div class="blog-link-btn">
+                                        <a href="/blogs/detail/{{ blog.id }}">بازدید از مقاله <i
+                                                class="flaticon-arrow-pointing-to-left"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+
+                <div class="col-lg-12 mt-50">
+                    <div class="custom-pagination d-flex justify-content-center">
+                        <ul class="d-flex pagination-links">
+                            {% if page_obj.has_previous %}
+
+                                <li>
+                                    <a onclick="change_page({{ page_obj.previous_page_number }}, '{{ orders }}')"
+                                       class="has-arrow"><i
+                                            class="flaticon-arrow-pointing-to-right"></i></a></li>
+                            {% endif %}
+
+                            <li><a>{{ page_obj.number }}</a></li>
+
+                            {% if page_obj.has_next %}
+                                <li>
+                                    <a onclick="change_page({{ page_obj.next_page_number }}, '{{ orders }}')"
+                                       class="has-arrow"><i
+                                            class="flaticon-arrow-pointing-to-left"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% render_partial 'shop.views.FooterPartial' %}
+
+
+{% endblock %}
